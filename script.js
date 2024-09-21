@@ -1,3 +1,5 @@
+console.log('hola abby tqm')
+
 //JS
 //center .chick element around its origin
 TweenLite.set(".bird", { xPercent: -50, yPercent: -50 }); 
