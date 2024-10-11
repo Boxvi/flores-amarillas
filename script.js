@@ -1,5 +1,3 @@
-console.log('Hola Abigaíl tqm, y que tengas un bonito inicio de primavera')
-console.log('https://youtu.be/S7gMzYqXIZc?si=pT1afe_2TXGuEi5e')
 //JS
 //center .chick element around its origin
 TweenLite.set(".bird", { xPercent: -50, yPercent: -50 }); 
