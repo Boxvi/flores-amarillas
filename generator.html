@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Flores Amarillas</title>
+    <link rel="icon" href="logo.svg">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #fff8e1, #ffecb3);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #f57c00;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .flower-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #ffd54f;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5d4037;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffe082;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            border-color: #ffb300;
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background: linear-gradient(to right, #ffb300, #f57c00);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 124, 0, 0.3);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fffde7;
+            border-radius: 8px;
+            border-left: 5px solid #ffb300;
+            text-align: left;
+            display: none;
+        }
+        
+        .result h3 {
+            color: #f57c00;
+            margin-bottom: 10px;
+        }
+        
+        .url-container {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        #generated-url {
+            flex: 1;
+            padding: 10px;
+            background-color: #fff9c4;
+            border: 1px dashed #ffd54f;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+        
+        #copy-btn {
+            padding: 10px 15px;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #8d6e63;
+            text-align: left;
+            line-height: 1.5;
+        }
+        
+        .sunflower {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #FFC107 20%, #FF9800 70%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        .sunflower-1 {
+            top: 10%;
+            left: 15%;
+        }
+        
+        .sunflower-2 {
+            bottom: 10%;
+            right: 15%;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .sunflower {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sunflower sunflower-1"></div>
+    <div class="sunflower sunflower-2"></div>
+    
+    <div class="container">
+        <div class="flower-icon">🌼</div>
+        <h1>Generador de Flores Amarillas</h1>
+        
+        <div class="form-group">
+            <label for="name">Su nombre o Apodo:</label>
+            <input type="text" id="name" placeholder="Ej: María, Mary">
+        </div>
+        
+        <button id="generate-btn">Generar Enlace</button>   
+        
+        <div class="result" id="result">
+            <h3>¡Tu enlace está listo!</h3>
+            <p>Comparte este enlace para enviar flores amarillas:</p>
+            
+            <div class="url-container">
+                <div id="generated-url"></div>
+                <button id="copy-btn">Copiar</button>
+            </div>
+            
+            <div class="instructions">
+                <p><strong>Instrucciones:</strong> Cuando la persona haga clic en el enlace, verá una página con flores amarillas y tu mensaje personalizado.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generate-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultDiv = document.getElementById('result');
+            const generatedUrl = document.getElementById('generated-url');
+            
+            generateBtn.addEventListener('click', function() {
+                const name = document.getElementById('name').value.trim();
+                
+                if (!name) {
+                    alert('Por favor, completa todos los campos');
+                    return;
+                }
+                
+                // Codificar los valores para que sean seguros en una URL
+                const encodedName = encodeURIComponent(name);
+                
+                // Construir la URL (en un caso real, esto apuntaría a tu servidor)
+                const baseUrl = window.location.href.replace(/[^/]*$/, '');
+                const url = `${baseUrl}?from=${encodedName}`;
+                
+                // Mostrar la URL generada
+                generatedUrl.textContent = url;
+                resultDiv.style.display = 'block';
+                
+                // Desplazarse suavemente hacia el resultado
+                resultDiv.scrollIntoView({ behavior: 'smooth' });   
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = generatedUrl.textContent;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                
+                // Cambiar temporalmente el texto del botón
+                copyBtn.textContent = '¡Copiado!';
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copiar';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
