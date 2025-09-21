@@ -24,8 +24,8 @@
         <!-- Las letras del nombre se insertarán aquí con JavaScript -->
     </div>
 
-    <div class="description">
-        <span>Tengo un regalo especial para ti!!</span>
+    <div class="description" id="name2-container">
+        <p>Te envio este regalo departe de: <span id="name2-span"></span>,   disfruta de estas flores amarillas.</p>        
     </div>
 
     <div class="button">
@@ -42,8 +42,9 @@
             return urlParams.get(param);
         }
 
-        // Obtener el nombre del parámetro 'from'
-        const name = getQueryParam('from') || 'Amiga';
+        // Obtener el nombre del parámetro 'to'
+        const name = getQueryParam('to') || 'Amiga';
+        const name2 = getQueryParam('from') || 'mi';  
 
         // Seleccionar el contenedor donde se mostrarán las letras
         const nameContainer = document.getElementById('name-container');
@@ -57,8 +58,8 @@
             span.textContent = char;
             nameContainer.appendChild(span);
         }
-
-
+        // Mostrar el nombre2 en el contenedor correspondiente
+        document.getElementById('name2-span').textContent = name2;
 
     </script>
 </body>
